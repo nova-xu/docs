@@ -15,7 +15,7 @@ When receiving Lightning oncall tickets, one can quickly look through the log an
 
 ## Log Explanation & Source Code
 
-[WARN] [[config.go:800](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/config/config.go#L800)]["currently only per-task configuration can be applied, global configuration changes can only be made on startup"] ["global config changes"="[lightning.level,lightning.file]"]
+[WARN] [[config.go:800](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/config/config.go#L800)]`["currently only per-task configuration can be applied, global configuration changes can only be made on startup"] ["global config changes"="[lightning.level,lightning.file]"]`
 
 **Warn that some legal field of config file won't be overwritten, such as lightning.file.
 Triggered from [br/cmd/tidb-lightning/main.go](https://github.com/pingcap/tidb/blob/v5.4.0/br/cmd/tidb-lightning/main.go#L87) , it represents loading lightning toml file.**
@@ -232,11 +232,11 @@ the restoring process is as following:**
 
 **Table restore has completed.**
 
-[INFO] [[restore.go:1396](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L1396)] ["add back PD leader&region schedulers"]\\
-[INFO] [[pd.go:462](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/pdutil/pd.go#L462)] ["resume scheduler"] [schedulers="[balance-region-scheduler,balance-leader-scheduler,balance-hot-region-scheduler]"]\\
-[INFO] [[pd.go:448](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/pdutil/pd.go#L448)] ["exit pause scheduler and configs successful"]\\ 
-[INFO] [[pd.go:482](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/pdutil/pd.go#482)] ["resume scheduler successful"] [scheduler=balance-region-scheduler]\\
-[INFO] [[pd.go:573](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/pdutil/pd.go#573)] ["restoring config"] [config="{\"enable-location-replacement\":\"true\",\"leader-schedule-limit\":4,\"max-merge-region-keys\":200000,\"max-merge-region-size\":20,\"max-pending-peer-count\":64,\"max-snapshot-count\":64,\"region-schedule-limit\":2048}"]\\
+[INFO] [[restore.go:1396](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L1396)] `["add back PD leader&region schedulers"]`
+[INFO] [[pd.go:462](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/pdutil/pd.go#L462)] ["resume scheduler"] `[schedulers="[balance-region-scheduler,balance-leader-scheduler,balance-hot-region-scheduler]"]`
+[INFO] [[pd.go:448](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/pdutil/pd.go#L448)] `["exit pause scheduler and configs successful"]`
+[INFO] [[pd.go:482](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/pdutil/pd.go#482)] `["resume scheduler successful"] [scheduler=balance-region-scheduler]`
+[INFO] [[pd.go:573](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/pdutil/pd.go#573)] `["restoring config"] [config="{\"enable-location-replacement\":\"true\",\"leader-schedule-limit\":4,\"max-merge-region-keys\":200000,\"max-merge-region-size\":20,\"max-pending-peer-count\":64,\"max-snapshot-count\":64,\"region-schedule-limit\":2048}"]`
 
 **Restore PD from import mode to normal mode, resume paused PD schedulers before import, and reset PD configs.**
 

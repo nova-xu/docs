@@ -1,5 +1,7 @@
+---
 title: TiDB Lightning Log Explanation
 summary: Provide detailed explanation of logs generating during the importing process using TiDB Lightning.
+---
 
 # TiDB Lightning Log Explanation
 

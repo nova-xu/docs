@@ -15,7 +15,7 @@ When receiving Lightning oncall tickets, one can quickly look through the log an
 
 ## Log Explanation & Source Code
 
-[WARN] [[config.go:800](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/config/config.go#L800)]`["currently only per-task configuration can be applied, global configuration changes can only be made on startup"] ["global config changes"="[lightning.level,lightning.file]"]`
+[WARN] [[config.go:800](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/config/config.go#L800)]["currently only per-task configuration can be applied, global configuration changes can only be made on startup"] ["global config changes"="[lightning.level,lightning.file]"]
 
 **Warn that some legal field of config file won't be overwritten, such as lightning.file.
 Triggered from [br/cmd/tidb-lightning/main.go](https://github.com/pingcap/tidb/blob/v5.4.0/br/cmd/tidb-lightning/main.go#L87) , it represents loading lightning toml file.**
@@ -28,9 +28,9 @@ Triggered from [br/cmd/tidb-lightning/main.go](https://github.com/pingcap/tidb/b
 
 **Print TiDB Lightning config information.**
 
-[INFO] [[lightning.go:312](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/lightning.go#L312)]["load data source start"]
-[INFO] [[loader.go:289](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/loader.go#L289)]["[loader] file is filtered by file router"] [path=metadata]
-[INFO] [[lightning.go:315](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/lightning.go#L315)]["load data source completed"] [takeTime=273.964µs] []
+[INFO] [[lightning.go:312](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/lightning.go#L312)]["load data source start"]   
+[INFO] [[loader.go:289](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/loader.go#L289)]["[loader] file is filtered by file router"] [path=metadata]   
+[INFO] [[lightning.go:315](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/lightning.go#L315)]["load data source completed"] [takeTime=273.964µs] []   
 
 **[Load Lightning config](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/loader.go#L105) info of data source, [scan relevant data source file info](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/loader.go#L205), and store it into s.loader.dbs for later import process. The log "file is filtered by file route" indicates which file is [skipped by cfg.Mydumper.FileRouters and cfg.Mydumper.DefaultFileRules](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/loader.go#L134).**
 
@@ -46,8 +46,8 @@ Triggered from [br/cmd/tidb-lightning/main.go](https://github.com/pingcap/tidb/b
 
 **Start the importing process. **
 
-[INFO] [[restore.go:748](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L748)] ["restore all schema start"]
-[INFO] [[restore.go:767](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L767)] ["restore all schema completed"] [takeTime=189.766729ms]
+[INFO] [[restore.go:748](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L748)] ["restore all schema start"]   
+[INFO] [[restore.go:767](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L767)] ["restore all schema completed"] [takeTime=189.766729ms]  
 
 **Based on data source schema, create the needed database and table in the target TiDB cluster.**
 
@@ -61,8 +61,8 @@ Triggered from [br/cmd/tidb-lightning/main.go](https://github.com/pingcap/tidb/b
 
 **We also need to check server version for [detecting data confilcts](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/version/version.go#L224).**
 
-[INFO] [[check_info.go:995](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/check_info.go#L995)] ["sample file start"] [table=sbtest1]
-[INFO] [[check_info.go:1080](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/check_info.go#L1080)] ["Sample source data"] [table=sbtest1] [IndexRatio=1.3037832180660969] [IsSourceOrder=true]
+[INFO] [[check_info.go:995](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/check_info.go#L995)] ["sample file start"] [table=sbtest1]  
+[INFO] [[check_info.go:1080](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/check_info.go#L1080)] ["Sample source data"] [table=sbtest1] [IndexRatio=1.3037832180660969] [IsSourceOrder=true]  
   
 **As part of lightning precheck, we need to estimate source data size to determine: 1. [the local disk has enough space if Lighting is in local backend mode](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/check_info.go#L462); 2. [the target cluster has enough space to store transformed kv pairs](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/check_info.go#L102). The log message shows that Lightning sample first source data file of each table, and transforms sample source data to kv paris to estimate the size of kv pairs based on file size vs. kv pairs size ratio.**
 
@@ -83,7 +83,7 @@ Triggered from [br/cmd/tidb-lightning/main.go](https://github.com/pingcap/tidb/b
 
 **Start to restore table `sysbench`.`sbtest1`.  Lightning concurrently restore multiple tables based on [IndexConcurrency](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L1459) config. For each table, Lightning concurrently restore data files in the table based on [RegionConcurrency](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/region.go#L157).**
 
-[INFO] [[table_restore.go:91](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L91)] ["load engines and files start"] [table=`sysbench`.`sbtest1`] 
+[INFO] [[table_restore.go:91](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L91)] ["load engines and files start"] [table=`sysbench`.`sbtest1`]   
 [INFO] [[region.go:241](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/region.go#L241)] [makeTableRegions] [filesCount=8] [MaxRegionSize=268435456] [RegionsCount=8] [BatchSize=107374182400] [cost=53.207µs]
 
 **For [single table restore](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L1561), function [populateChunks](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L1561) prints log: load engines and files start, and calls [makeTableReigions](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/region.go#L136) to split table data files into multiple [chunks/table regions](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/region.go#L283) based on [RegionConcurrency](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/mydump/region.go#L157) concurrency number(max value would be the max logical CPU cores number).**
@@ -126,8 +126,7 @@ Triggered from [br/cmd/tidb-lightning/main.go](https://github.com/pingcap/tidb/b
 
 [INFO] [[restore.go:2482](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L2482)] ["restore file start"] [table=`sysbench`.`sbtest1`] [engineNumber=0] [fileIndex=0] [path=sysbench.sbtest1.000000000.sql:0] 
 
-**Each log in this form indicates start of restoring a chunk/region. [restoreEngine](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L386) concurrently restores chunks based on [regionWorkers](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L532) defined by [RegionConcurrency](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L402).  For each chunk, 
-the restoring process is as following:**
+**Each log in this form indicates start of restoring a chunk/region. [restoreEngine](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L386) concurrently restores chunks based on [regionWorkers](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L532) defined by [RegionConcurrency](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L402). For each chunk, the restoring process is as following:**
 1. **`encodeLoop` [encodes sql into kv pairs](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L2389);**
  2. **`deliverLoop` [writes kv pairs into data engine and index engine](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L2179):**
 	- **[`WriteRows`](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/backend.go#L403) ->[`AppendRows`](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/local/engine.go#L1076) determines using either [appendRowsSorted](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/local/engine.go#L1006) or [appendRowsUnsorted](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/local/engine.go#L1041) to write KVs into the SST file based on whether KVs are sorted.**
@@ -147,7 +146,7 @@ the restoring process is as following:**
 
 **The process of restoring table data by chunks has completed. engine `engineNumber=0` has already processed `table = sysbench.sbtest1`, and all kv pairs have been writen into pebble engine.**
 
-[INFO] [[backend.go:438](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/backend.go#L438)] ["engine close start"] [engineTag=`sysbench`.`sbtest1`:0] [engineUUID=d173bb2e-b753-5da9-b72e-13a49a46f5d7] 
+[INFO] [[backend.go:438](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/backend.go#L438)] ["engine close start"] [engineTag=`sysbench`.`sbtest1`:0] [engineUUID=d173bb2e-b753-5da9-b72e-13a49a46f5d7]   
 [INFO] [[backend.go:440](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/backend.go#L440)] ["engine close completed"] [engineTag=`sysbench`.`sbtest1`:0] [engineUUID=d173bb2e-b753-5da9-b72e-13a49a46f5d7] [takeTime=2.879906ms] []
 
 **The logs shows [the final stage of engine restore](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L628). The data engine that processed the table data is closed and prepared for importing.**
@@ -160,7 +159,7 @@ the restoring process is as following:**
 
 **The process of writing KV pairs to the engine has completed. The corresponding engine for this process has id = 0.**
 
-[INFO] [[table_restore.go:927](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L927)] ["import and cleanup engine start"] [engineTag=`sysbench`.`sbtest1`:0] [engineUUID=d173bb2e-b753-5da9-b72e-13a49a46f5d7] 
+[INFO] [[table_restore.go:927](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L927)] ["import and cleanup engine start"] [engineTag=`sysbench`.`sbtest1`:0] [engineUUID=d173bb2e-b753-5da9-b72e-13a49a46f5d7]   
 [INFO] [[backend.go:452](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/backend.go#L452)] ["import start"] [engineTag=`sysbench`.`sbtest1`:0] [engineUUID=d173bb2e-b753-5da9-b72e-13a49a46f5d7] [retryCnt=0]
 
 **Based on [TikvImporter.RegionSplitSize](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L927) config, it starts to [import](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/local/local.go#L1311) kv pairs stored in the engine into the target TiKV node.**
@@ -183,12 +182,12 @@ the restoring process is as following:**
 
 **Start to [split and scatter](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/local/localhelper.go#L65) previous unfinished ranges. minKey and maxKey refer to the min and max key of unfinished ranges.**
 
-[INFO] [[localhelper.go:108](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/local/localhelper.go#L108)] ["paginate scan regions"] [count=1] [start=7480000000000000FF3F5F728000000000FF0000010000000000FA] [end=7480000000000000FF3F5F728000000000FF9896810000000000FA] 
+[INFO] [[localhelper.go:108](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/local/localhelper.go#L108)] ["paginate scan regions"] [count=1] [start=7480000000000000FF3F5F728000000000FF0000010000000000FA] [end=7480000000000000FF3F5F728000000000FF9896810000000000FA]   
 [INFO] [[localhelper.go:116](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/local/localhelper.go#L108)] ["paginate scan region finished"] [minKey=7480000000000000FF3F5F728000000000FF0000010000000000FA] [maxKey=7480000000000000FF3F5F728000000000FF9896810000000000FA] [regions=1]
 
 **[PaginateScanRegion](https://github.com/pingcap/tidb/blob/55f3b24c1c9f506bd652ef1d162283541e428872/br/pkg/restore/split.go#L413) scans a batch of regions (limit = 128) at a time in the key range (minKey/start, maxKey/end).  It is part of the [SplitAndScatterRegionByRanges](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/local/localhelper.go#L65) process mentioned before.** 
 
-[INFO] [[split_client.go:460](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/restore/split_client.go#L460)] ["checking whether need to scatter"] [store=1] [max-replica=3] 
+[INFO] [[split_client.go:460](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/restore/split_client.go#L460)] ["checking whether need to scatter"] [store=1] [max-replica=3]   
 [INFO] [[split_client.go:113](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/restore/split_client.go#L113)] ["skipping scatter because the replica number isn't less than store count."]
 
 **Lightning skips the scatter regions phase because max-replica <= number of TiKV stores. Scattering regions is the process that PD schedulers distributes regions and their replicas to different TiKV stores.**
@@ -205,12 +204,12 @@ the restoring process is as following:**
 
 **Region scattering has completed. If the waiting time exceeds [ScatterWaitUpperInterval](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/local/localhelper.go#L313), it shows timeout log: waiting for scattering regions timeout.**
 
-[INFO] [[local.go:1371](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/local/local.go#L1371)] ["import engine success"] [uuid=d173bb2e-b753-5da9-b72e-13a49a46f5d7] [size=2159933993] [kvs=10000000] [importedSize=2159933993] [importedCount=10000000] 
+[INFO] [[local.go:1371](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/local/local.go#L1371)] ["import engine success"] [uuid=d173bb2e-b753-5da9-b72e-13a49a46f5d7] [size=2159933993] [kvs=10000000] [importedSize=2159933993] [importedCount=10000000]   
 [INFO] [[backend.go:455](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/backend.go#L455)] ["import completed"] [engineTag=`sysbench`.`sbtest1`:0] [engineUUID=d173bb2e-b753-5da9-b72e-13a49a46f5d7] [retryCnt=0] [takeTime=20.179184481s] []
 
 **Lightning has completed importing KV pairs in the specific engine to the TiKV stores.**
   
-[INFO] [[backend.go:467](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/backend.go#L467)] ["cleanup start"] [engineTag=`sysbench`.`sbtest1`:0] [engineUUID=d173bb2e-b753-5da9-b72e-13a49a46f5d7] 
+[INFO] [[backend.go:467](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/backend.go#L467)] ["cleanup start"] [engineTag=`sysbench`.`sbtest1`:0] [engineUUID=d173bb2e-b753-5da9-b72e-13a49a46f5d7]   
 [INFO] [[backend.go:469](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/backend/backend.go#L469)] ["cleanup completed"] [engineTag=`sysbench`.`sbtest1`:0] [engineUUID=d173bb2e-b753-5da9-b72e-13a49a46f5d7] [takeTime=209.800004ms] []
 
 **Clean up intermediate data during import phase. It will [cleanup](https://github.com/pingcap/tidb/blob/55f3b24c1c9f506bd652ef1d162283541e428872/br/pkg/lightning/backend/local/engine.go#L158) engine related meta info and db files.**
@@ -223,7 +222,7 @@ the restoring process is as following:**
 
 **Importing table data has completed. Lightning has converted all table data into KV pairs and ingested them into the TiKV clusters.** 
 
-[INFO] [[tidb.go:401](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/tidb.go#L401)] ["alter table auto_increment start"] [table=`sysbench`.`sbtest1`] [auto_increment=10000002] 
+[INFO] [[tidb.go:401](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/tidb.go#L401)] ["alter table auto_increment start"] [table=`sysbench`.`sbtest1`] [auto_increment=10000002]   
 [INFO] [[tidb.go:403](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/tidb.go#L403)] ["alter table auto_increment completed"] [table=`sysbench`.`sbtest1`] [auto_increment=10000002] [takeTime=82.225557ms] []
 
 **During [post process](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L680) phase, it will [adjust table auto increment](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L703) to avoid introducing conflicts from newly added data.**
@@ -248,14 +247,14 @@ the restoring process is as following:**
 
 **Switch TiKV back to the normal mode.**
 
-[INFO] [[table_restore.go:736](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L736)] ["local checksum"] [table=`sysbench`.`sbtest1`] [checksum="{cksum=9970490404295648092,size=2539933993,kvs=20000000}"] 
-[INFO] [[checksum.go:172](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/checksum.go#L172)] ["remote checksum start"] [table=sbtest1] 
-[INFO] [[checksum.go:175](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/checksum.go#L175)] ["remote checksum completed"] [table=sbtest1] [takeTime=2.817086758s] [] 
+[INFO] [[table_restore.go:736](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L736)] ["local checksum"] [table=`sysbench`.`sbtest1`] [checksum="{cksum=9970490404295648092,size=2539933993,kvs=20000000}"]   
+[INFO] [[checksum.go:172](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/checksum.go#L172)] ["remote checksum start"] [table=sbtest1]   
+[INFO] [[checksum.go:175](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/checksum.go#L175)] ["remote checksum completed"] [table=sbtest1] [takeTime=2.817086758s] []   
 [INFO] [[table_restore.go:971](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L971)] ["checksum pass"] [table=`sysbench`.`sbtest1`] [local="{cksum=9970490404295648092,size=2539933993,kvs=20000000}"]
 
 **[Compare local and remote checksum](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L736) to validate the imported data.**
 
-[INFO] [[table_restore.go:976](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L976)] ["analyze start"] [table=`sysbench`.`sbtest1`] 
+[INFO] [[table_restore.go:976](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L976)] ["analyze start"] [table=`sysbench`.`sbtest1`]   
 [INFO] [[table_restore.go:978](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/table_restore.go#L978)] ["analyze completed"] [table=`sysbench`.`sbtest1`] [takeTime=26.410378251s] []
 
 **TiDB analyzes table to update the statistics that TiDB builds on tables and indexes. It is recommended to run `ANALYZE` after performing a large batch update or import of records, or when you notice that query execution plans are sub-optimal.**
@@ -268,7 +267,7 @@ the restoring process is as following:**
 
 **[fullCompact](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L1654) determines if Lightning needs to compact data based on cfg.PostRestore.Compact.**
 
-[INFO] [[restore.go:1842](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L1842)] ["clean checkpoints start"] [keepAfterSuccess=remove] [taskID=1650516927467320997] 
+[INFO] [[restore.go:1842](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L1842)] ["clean checkpoints start"] [keepAfterSuccess=remove] [taskID=1650516927467320997]   
 [INFO] [[restore.go:1850](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L1850)] ["clean checkpoints completed"] [keepAfterSuccess=remove] [taskID=1650516927467320997] [takeTime=18.543µs] []
 
 **Clean up checkpoints.**

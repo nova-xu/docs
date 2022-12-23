@@ -44,7 +44,7 @@ Triggered from [br/cmd/tidb-lightning/main.go](https://github.com/pingcap/tidb/b
 
 [INFO] [[restore.go:444](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L444)] ["the whole procedure start"]
 
-**Start the importing process. **
+**Start the importing process.**
 
 [INFO] [[restore.go:748](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L748)] ["restore all schema start"]   
 [INFO] [[restore.go:767](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/lightning/restore/restore.go#L767)] ["restore all schema completed"] [takeTime=189.766729ms]  
